@@ -1,0 +1,429 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+// Users (both companies and students)
+model User {
+  id        String   @id @default(uuid())
+  clerkId   String   @unique @map("clerk_id")
+  email     String   @unique
+  role      String   // 'company' or 'student'
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  companyProfile CompanyProfile?
+  studentProfile StudentProfile?
+  workspaceMessages WorkspaceMessage[]
+  workspaceFiles WorkspaceFile[]
+  tasks Task[]
+  deliverables Deliverable[]
+  reviewsGiven Review[] @relation("ReviewsGiven")
+  reviewsReceived Review[] @relation("ReviewsReceived")
+  payments Payment[] @relation("PaymentsPayer")
+  notifications Notification[]
+  disputesInitiated Dispute[] @relation("DisputesInitiated")
+  disputesResolved Dispute[] @relation("DisputesResolved")
+  aiConversations AIConversation[]
+
+  @@map("users")
+}
+
+// Company Profiles
+model CompanyProfile {
+  id                 String   @id @default(uuid())
+  userId             String   @unique @map("user_id")
+  companyName        String   @map("company_name")
+  industry           String?
+  size               String?
+  website            String?
+  logoUrl            String?  @map("logo_url")
+  bio                String?  @db.Text
+  subscriptionTier   String?  @map("subscription_tier") // 'starter', 'growth', 'enterprise'
+  subscriptionStatus String?  @map("subscription_status") // 'active', 'cancelled', 'past_due'
+  stripeCustomerId   String?  @map("stripe_customer_id")
+  overallRating      Decimal  @default(0) @map("overall_rating") @db.Decimal(3, 2)
+  totalProjects      Int      @default(0) @map("total_projects")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects Project[]
+
+  @@map("company_profiles")
+}
+
+// Student Profiles
+model StudentProfile {
+  id                String   @id @default(uuid())
+  userId            String   @unique @map("user_id")
+  fullName          String   @map("full_name")
+  university        String
+  graduationYear    Int      @map("graduation_year")
+  major             String
+  minor             String?
+  gpa               Decimal? @db.Decimal(3, 2)
+  profilePhotoUrl   String?  @map("profile_photo_url")
+  linkedinUrl       String?  @map("linkedin_url")
+  portfolioUrl      String?  @map("portfolio_url")
+  headline          String?
+  bio               String?  @db.Text
+  hoursPerWeek      Int      @default(10) @map("hours_per_week")
+  timezone          String?
+  level             String   @default("beginner") // 'beginner', 'intermediate', 'advanced', 'expert'
+  levelPoints       Int      @default(0) @map("level_points")
+  overallRating     Decimal  @default(0) @map("overall_rating") @db.Decimal(3, 2)
+  totalProjects     Int      @default(0) @map("total_projects")
+  totalEarnings     Decimal  @default(0) @map("total_earnings") @db.Decimal(10, 2)
+  stripeAccountId   String?  @map("stripe_account_id")
+  aiAssessmentScore Int?     @map("ai_assessment_score")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills       StudentSkill[]
+  tools        StudentTool[]
+  applications Application[]
+  teamMembers  TeamMember[]
+  transactions Transaction[]
+
+  @@map("student_profiles")
+}
+
+// Student Skills
+model StudentSkill {
+  id          String   @id @default(uuid())
+  studentId   String   @map("student_id")
+  skillName   String   @map("skill_name")
+  proficiency String?  // 'beginner', 'intermediate', 'advanced', 'expert'
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("student_skills")
+}
+
+// Student Tools
+model StudentTool {
+  id        String   @id @default(uuid())
+  studentId String   @map("student_id")
+  toolName  String   @map("tool_name")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("student_tools")
+}
+
+// Projects
+model Project {
+  id                   String   @id @default(uuid())
+  companyId            String   @map("company_id")
+  title                String
+  description          String   @db.Text
+  category             String
+  complexity           String   // 'beginner', 'intermediate', 'advanced'
+  budget               Decimal  @db.Decimal(10, 2)
+  deadline             DateTime
+  teamSizePreference   String?  @map("team_size_preference")
+  estimatedHours       Int?     @map("estimated_hours")
+  timezonePreference   String?  @map("timezone_preference")
+  status               String   @default("open") // 'open', 'in_progress', 'submitted', 'completed', 'cancelled', 'disputed'
+  selectedTeamId       String?  @map("selected_team_id")
+  embedding            Unsupported("vector(1536)")?
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  company           CompanyProfile     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  projectSkills     ProjectSkill[]
+  projectFiles      ProjectFile[]
+  applications      Application[]
+  teams             Team[]
+  workspaceMessages WorkspaceMessage[]
+  workspaceFiles    WorkspaceFile[]
+  tasks             Task[]
+  deliverables      Deliverable[]
+  reviews           Review[]
+  payments          Payment[]
+  disputes          Dispute[]
+  aiConversations   AIConversation[]
+
+  @@map("projects")
+}
+
+// Project Skills (required for project)
+model ProjectSkill {
+  id        String   @id @default(uuid())
+  projectId String   @map("project_id")
+  skillName String   @map("skill_name")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_skills")
+}
+
+// Project Files (attachments by company)
+model ProjectFile {
+  id         String   @id @default(uuid())
+  projectId  String   @map("project_id")
+  fileName   String   @map("file_name")
+  fileUrl    String   @map("file_url")
+  fileSize   Int?     @map("file_size")
+  fileType   String?  @map("file_type")
+  uploadedBy String?  @map("uploaded_by")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_files")
+}
+
+// Applications (students applying to projects)
+model Application {
+  id              String   @id @default(uuid())
+  projectId       String   @map("project_id")
+  studentId       String   @map("student_id")
+  coverLetter     String?  @db.Text @map("cover_letter")
+  proposedRate    Decimal? @db.Decimal(10, 2) @map("proposed_rate")
+  proposedTimeline Int?    @map("proposed_timeline") // in days
+  status          String   @default("pending") // 'pending', 'accepted', 'rejected', 'withdrawn'
+  matchScore      Int?     @map("match_score") // AI-calculated match score (0-100)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  project Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("applications")
+}
+
+// Teams (can be solo or multi-person)
+model Team {
+  id        String   @id @default(uuid())
+  projectId String   @map("project_id")
+  teamName  String?  @map("team_name")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  teamMembers TeamMember[]
+
+  @@map("teams")
+}
+
+// Team Members
+model TeamMember {
+  id            String   @id @default(uuid())
+  teamId        String   @map("team_id")
+  studentId     String   @map("student_id")
+  role          String?  // 'Lead', 'Writer', 'Designer', etc.
+  earningsSplit Decimal? @db.Decimal(5, 2) @map("earnings_split") // Percentage of total (e.g., 50.00 for 50%)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  team    Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("team_members")
+}
+
+// Workspace Messages (chat)
+model WorkspaceMessage {
+  id          String   @id @default(uuid())
+  projectId   String   @map("project_id")
+  senderId    String   @map("sender_id")
+  messageText String   @db.Text @map("message_text")
+  isAiMessage Boolean  @default(false) @map("is_ai_message")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sender  User    @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("workspace_messages")
+}
+
+// Workspace Files (shared during project)
+model WorkspaceFile {
+  id         String   @id @default(uuid())
+  projectId  String   @map("project_id")
+  uploadedBy String   @map("uploaded_by")
+  fileName   String   @map("file_name")
+  fileUrl    String   @map("file_url")
+  fileSize   Int?     @map("file_size")
+  fileType   String?  @map("file_type")
+  folder     String?  // 'brief', 'research', 'drafts', 'final'
+  version    Int      @default(1)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  project  Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  uploader User    @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
+
+  @@map("workspace_files")
+}
+
+// Tasks
+model Task {
+  id          String    @id @default(uuid())
+  projectId   String    @map("project_id")
+  title       String
+  description String?   @db.Text
+  assignedTo  String?   @map("assigned_to")
+  status      String    @default("todo") // 'todo', 'in_progress', 'completed'
+  priority    String    @default("medium") // 'low', 'medium', 'high'
+  dueDate     DateTime? @map("due_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  project  Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignee User?   @relation(fields: [assignedTo], references: [id])
+
+  @@map("tasks")
+}
+
+// Deliverables (final submission)
+model Deliverable {
+  id           String    @id @default(uuid())
+  projectId    String    @map("project_id")
+  submittedBy  String    @map("submitted_by")
+  summary      String?   @db.Text
+  qualityScore Int?      @map("quality_score") // AI quality check score (0-100)
+  status       String    @default("pending") // 'pending', 'approved', 'revision_requested', 'disputed'
+  submittedAt  DateTime  @default(now()) @map("submitted_at")
+  reviewedAt   DateTime? @map("reviewed_at")
+
+  project          Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  submitter        User               @relation(fields: [submittedBy], references: [id], onDelete: Cascade)
+  deliverableFiles DeliverableFile[]
+
+  @@map("deliverables")
+}
+
+// Deliverable Files
+model DeliverableFile {
+  id            String   @id @default(uuid())
+  deliverableId String   @map("deliverable_id")
+  fileName      String   @map("file_name")
+  fileUrl       String   @map("file_url")
+  fileSize      Int?     @map("file_size")
+  fileType      String?  @map("file_type")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  deliverable Deliverable @relation(fields: [deliverableId], references: [id], onDelete: Cascade)
+
+  @@map("deliverable_files")
+}
+
+// Reviews (ratings after project completion)
+model Review {
+  id                    String   @id @default(uuid())
+  projectId             String   @map("project_id")
+  reviewerId            String   @map("reviewer_id")
+  revieweeId            String   @map("reviewee_id")
+  overallRating         Int      @map("overall_rating") // 1-5
+  qualityRating         Int?     @map("quality_rating")
+  communicationRating   Int?     @map("communication_rating")
+  timelinessRating      Int?     @map("timeliness_rating")
+  professionalismRating Int?     @map("professionalism_rating")
+  writtenReview         String?  @db.Text @map("written_review")
+  wouldWorkAgain        String?  @map("would_work_again")
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  project  Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  reviewer User    @relation("ReviewsGiven", fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewee User    @relation("ReviewsReceived", fields: [revieweeId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+// Payments
+model Payment {
+  id                    String   @id @default(uuid())
+  projectId             String   @map("project_id")
+  payerId               String   @map("payer_id")
+  amount                Decimal  @db.Decimal(10, 2)
+  platformFee           Decimal  @db.Decimal(10, 2) @map("platform_fee")
+  status                String   @default("pending") // 'pending', 'held', 'released', 'refunded'
+  stripePaymentIntentId String?  @map("stripe_payment_intent_id")
+  stripeTransferId      String?  @map("stripe_transfer_id")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  payer   User    @relation("PaymentsPayer", fields: [payerId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+// Transactions (student earnings history)
+model Transaction {
+  id                  String   @id @default(uuid())
+  studentId           String   @map("student_id")
+  transactionType     String   @map("transaction_type") // 'earning', 'withdrawal', 'refund'
+  amount              Decimal  @db.Decimal(10, 2)
+  description         String?  @db.Text
+  projectId           String?  @map("project_id")
+  stripeTransactionId String?  @map("stripe_transaction_id")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
+
+// Notifications
+model Notification {
+  id               String   @id @default(uuid())
+  userId           String   @map("user_id")
+  notificationType String   @map("notification_type")
+  title            String
+  message          String   @db.Text
+  link             String?
+  read             Boolean  @default(false)
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// Disputes
+model Dispute {
+  id          String    @id @default(uuid())
+  projectId   String    @map("project_id")
+  initiatedBy String    @map("initiated_by")
+  reason      String    @db.Text
+  status      String    @default("open") // 'open', 'investigating', 'resolved'
+  resolution  String?   @db.Text
+  resolvedBy  String?   @map("resolved_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  resolvedAt  DateTime? @map("resolved_at")
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  initiator User    @relation("DisputesInitiated", fields: [initiatedBy], references: [id], onDelete: Cascade)
+  resolver  User?   @relation("DisputesResolved", fields: [resolvedBy], references: [id])
+
+  @@map("disputes")
+}
+
+// AI Conversations (for context persistence)
+model AIConversation {
+  id                   String   @id @default(uuid())
+  projectId            String   @map("project_id")
+  userId               String   @map("user_id")
+  conversationHistory  Json     @map("conversation_history") // Store full conversation as JSON
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("ai_conversations")
+}

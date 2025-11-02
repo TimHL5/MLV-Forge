@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+/* MLV Forge Design System */
+:root {
+  /* Primary Colors */
+  --electric-blue: #0066FF;
+  --deep-purple: #6B46FF;
+  --cyber-cyan: #00F0FF;
+
+  /* Dark Mode Colors */
+  --void-black: #0A0A0A;
+  --neural-gray: #1A1A1A;
+  --ghost-white: #F8F9FA;
+
+  /* Accent Colors */
+  --neon-green: #00FF88;
+  --warning-orange: #FF6B35;
+  --error-red: #FF3366;
+
+  /* Neutral Scale */
+  --gray-900: #0D0D0D;
+  --gray-800: #1A1A1A;
+  --gray-700: #333333;
+  --gray-600: #666666;
+  --gray-500: #999999;
+  --gray-400: #CCCCCC;
+  --gray-300: #E5E5E5;
+  --gray-200: #F2F2F2;
+  --gray-100: #F8F9FA;
+
+  /* Dark Mode First */
+  --background: var(--void-black);
+  --foreground: var(--ghost-white);
+  --card-bg: var(--neural-gray);
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+@theme inline {
+  /* Colors */
+  --color-primary: var(--electric-blue);
+  --color-secondary: var(--deep-purple);
+  --color-accent: var(--cyber-cyan);
+  --color-success: var(--neon-green);
+  --color-warning: var(--warning-orange);
+  --color-error: var(--error-red);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card-bg);
+  --color-border: var(--border);
+
+  /* Grays */
+  --color-gray-900: var(--gray-900);
+  --color-gray-800: var(--gray-800);
+  --color-gray-700: var(--gray-700);
+  --color-gray-600: var(--gray-600);
+  --color-gray-500: var(--gray-500);
+  --color-gray-400: var(--gray-400);
+  --color-gray-300: var(--gray-300);
+  --color-gray-200: var(--gray-200);
+  --color-gray-100: var(--gray-100);
+
+  /* Typography */
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Animations */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+}
+
+/* Light mode (optional) */
+[data-theme="light"] {
+  --background: var(--ghost-white);
+  --foreground: var(--void-black);
+  --card-bg: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-800);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* Selection */
+::selection {
+  background: var(--electric-blue);
+  color: white;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), var(--font-sans);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Glassmorphism utility class */
+.glass {
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient button utility */
+.gradient-btn {
+  background: linear-gradient(135deg, var(--electric-blue) 0%, var(--cyber-cyan) 100%);
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+}
+
+.gradient-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+}
+
+/* Neumorphism */
+.neumorphic {
+  background: var(--neural-gray);
+  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.4),
+              -8px -8px 16px rgba(255, 255, 255, 0.02);
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--electric-blue);
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn var(--duration-normal) ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
