@@ -1,27 +1,111 @@
+'use client'
+
 import Link from "next/link";
-import { ArrowRight, Sparkles, Users, Zap, TrendingUp, Shield, Star } from "lucide-react";
+import { ArrowRight, Sparkles, Users, Zap, TrendingUp, Shield, Star, ChevronDown } from "lucide-react";
+import { AnimatedGrid } from "@/components/AnimatedGrid";
+import { GradientOrbs } from "@/components/GradientOrbs";
+import { FloatingParticles } from "@/components/FloatingParticles";
+import { useEffect, useState, useRef } from "react";
 
 export default function Home() {
+  const [scrollY, setScrollY] = useState(0);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollY(currentScrollY);
+
+      // Hide scroll indicator after scrolling 100px
+      if (currentScrollY > 100) {
+        setShowScrollIndicator(false);
+      } else {
+        setShowScrollIndicator(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Intersection Observer for fade-in animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in-visible');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
+    );
+
+    // Observe all elements with fade-in-on-scroll class
+    document.querySelectorAll('.fade-in-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full glass border-b border-border">
+    <div className="min-h-screen bg-[#0a0a0a] text-white relative overflow-x-hidden">
+      {/* Animated Backgrounds */}
+      <AnimatedGrid />
+      <GradientOrbs />
+      <FloatingParticles />
+
+      {/* Navigation - becomes solid on scroll */}
+      <nav
+        className="fixed top-0 z-50 w-full transition-all duration-300"
+        style={{
+          background: scrollY > 50
+            ? 'rgba(10, 10, 10, 0.95)'
+            : 'rgba(10, 10, 10, 0.5)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          borderBottom: scrollY > 50
+            ? '1px solid rgba(255, 255, 255, 0.1)'
+            : '1px solid rgba(255, 255, 255, 0.05)',
+          boxShadow: scrollY > 50
+            ? '0 4px 16px rgba(0, 0, 0, 0.3)'
+            : 'none',
+        }}
+      >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div
+              className="relative w-8 h-8"
+              style={{ willChange: 'transform' }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#6AC670] to-[#F2CF07] rounded-lg blur-md opacity-75 animate-pulse" />
+              <div className="relative w-8 h-8 bg-gradient-to-br from-[#6AC670] to-[#F2CF07] rounded-lg flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-[#0a0a0a]" />
+              </div>
             </div>
-            <span className="text-xl font-heading font-bold">MLV Forge</span>
+            <span className="text-xl font-heading font-bold gradient-text">MLV Forge</span>
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            <Link href="#how-it-works" className="text-sm hover:text-primary transition-colors">
+            <Link
+              href="#how-it-works"
+              className="text-sm text-white/80 hover:text-white hover:drop-shadow-[0_0_8px_rgba(106,198,112,0.5)] transition-all"
+            >
               How It Works
             </Link>
-            <Link href="#for-companies" className="text-sm hover:text-primary transition-colors">
+            <Link
+              href="#for-companies"
+              className="text-sm text-white/80 hover:text-white hover:drop-shadow-[0_0_8px_rgba(106,198,112,0.5)] transition-all"
+            >
               For Companies
             </Link>
-            <Link href="#for-students" className="text-sm hover:text-primary transition-colors">
+            <Link
+              href="#for-students"
+              className="text-sm text-white/80 hover:text-white hover:drop-shadow-[0_0_8px_rgba(106,198,112,0.5)] transition-all"
+            >
               For Students
             </Link>
           </div>
@@ -29,131 +113,219 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <Link
               href="/sign-in"
-              className="text-sm hover:text-primary transition-colors"
+              className="text-sm text-white/80 hover:text-white transition-colors"
             >
               Sign In
             </Link>
             <Link
               href="/sign-up"
-              className="gradient-btn px-6 py-2 rounded-lg text-sm font-medium text-white"
+              className="relative px-6 py-2 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] text-[#0a0a0a] font-semibold rounded-lg overflow-hidden group"
             >
-              Get Started
+              <div className="absolute inset-0 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] blur-xl opacity-75 group-hover:opacity-100 transition-opacity" />
+              <span className="relative z-10">Get Started</span>
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center space-y-6 animate-fade-in">
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm text-primary mb-4">
-              <Sparkles className="inline w-4 h-4 mr-2" />
-              Where AI Meets Ambition
+      {/* Hero Section with Parallax */}
+      <section className="relative min-h-screen flex items-center pt-20 pb-20 px-4 overflow-hidden">
+        <div
+          ref={heroRef}
+          className="container mx-auto max-w-6xl relative z-10"
+          style={{
+            transform: `translateY(${scrollY * 0.3}px)`,
+            willChange: 'transform',
+          }}
+        >
+          <div className="text-center space-y-8">
+            {/* AI Badge */}
+            <div className="inline-flex items-center space-x-3 px-6 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full animate-fade-in">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] rounded-full blur-md animate-pulse" />
+                <div className="relative w-2 h-2 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] rounded-full" />
+              </div>
+              <span className="text-sm font-mono font-medium text-white/80 tracking-wider">
+                AI_POWERED_WORKSPACE.EXE
+              </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-heading font-bold leading-tight">
-              Turn Your <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">AI Skills</span><br />
-              Into Real Work
+            {/* Main Headline with Fixed Gradient */}
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-none tracking-tight">
+              <span className="text-white">Turn Your</span>
+              <br />
+              <span
+                className="relative inline-block"
+                style={{
+                  color: '#6AC670', // Fallback color
+                  background: 'linear-gradient(135deg, #6AC670 0%, #F2CF07 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  filter: 'drop-shadow(0 0 20px rgba(106, 198, 112, 0.3))',
+                }}
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] blur-2xl opacity-50" />
+                <span className="relative">AI Skills</span>
+              </span>
+              <br />
+              <span className="text-white">Into Real Work</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
-              Get paid. Build your portfolio. Work on real projects with cutting-edge AI tools built into the platform.
+            {/* Subheadline */}
+            <p className="text-xl md:text-2xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">
+              Get paid. Build your portfolio. Work on <span className="text-[#6AC670] font-medium">real projects</span> with{' '}
+              <span className="text-[#F2CF07] font-medium">cutting-edge AI tools</span> built into the platform.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Link
                 href="/sign-up?role=student"
-                className="gradient-btn px-8 py-4 rounded-lg font-semibold text-white inline-flex items-center justify-center gap-2"
+                className="group relative w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] text-[#0a0a0a] font-bold text-lg rounded-xl overflow-hidden"
               >
-                I'm a Student
-                <ArrowRight className="w-5 h-5" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] blur-xl opacity-75 group-hover:opacity-100 transition-opacity" />
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  I'm a Student
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
               </Link>
+
               <Link
                 href="/sign-up?role=company"
-                className="px-8 py-4 rounded-lg font-semibold border-2 border-gray-700 hover:border-primary transition-colors inline-flex items-center justify-center gap-2"
+                className="group relative w-full sm:w-auto px-8 py-4 bg-white/5 backdrop-blur-sm text-white font-bold text-lg rounded-xl border border-white/20 hover:border-[#6AC670] hover:bg-white/10 transition-all overflow-hidden"
               >
-                I'm a Company
-                <ArrowRight className="w-5 h-5" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#6AC670]/20 to-[#F2CF07]/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  I'm a Company
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
               </Link>
             </div>
 
-            <div className="pt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-heading font-bold text-primary">$20-30</div>
-                <div className="text-sm text-gray-400">Per Hour</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-heading font-bold text-primary">80%</div>
-                <div className="text-sm text-gray-400">Cost Savings</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-heading font-bold text-primary">24/7</div>
-                <div className="text-sm text-gray-400">AI Assistant</div>
-              </div>
+            {/* Stats with staggered animation */}
+            <div
+              ref={statsRef}
+              className="pt-20 grid grid-cols-3 gap-8 max-w-4xl mx-auto"
+              style={{
+                transform: `translateY(${scrollY * 0.2}px)`,
+                willChange: 'transform',
+              }}
+            >
+              {[
+                { value: '$20-30', label: 'Per Hour', delay: '0s' },
+                { value: '80%', label: 'Cost Savings', delay: '0.1s' },
+                { value: '24/7', label: 'AI Assistant', delay: '0.2s' },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className="fade-in-on-scroll relative group"
+                  style={{ animationDelay: stat.delay }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#6AC670]/10 to-[#F2CF07]/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative text-center p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl group-hover:border-[#6AC670]/50 transition-colors">
+                    <div
+                      className="text-4xl md:text-5xl font-bold mb-2"
+                      style={{
+                        background: 'linear-gradient(135deg, #6AC670 0%, #F2CF07 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >
+                      {stat.value}
+                    </div>
+                    <div className="text-sm md:text-base text-white/60 font-mono">{stat.label}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+
+        {/* Scroll Indicator */}
+        <div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 transition-opacity duration-500"
+          style={{ opacity: showScrollIndicator ? 1 : 0, pointerEvents: showScrollIndicator ? 'auto' : 'none' }}
+        >
+          <div className="flex flex-col items-center gap-2 animate-bounce">
+            <span className="text-sm text-white/40 font-mono">SCROLL</span>
+            <ChevronDown className="w-6 h-6 text-[#6AC670]" />
+          </div>
+        </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
       </section>
 
       {/* Features Section */}
-      <section id="how-it-works" className="py-20 px-4 bg-card/50">
+      <section id="how-it-works" className="py-20 px-4 relative">
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+          <div className="text-center mb-16 fade-in-on-scroll">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4 gradient-text">
               How MLV Forge Works
             </h2>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-white/60">
               AI-powered platform connecting Gen Z talent with real business projects
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="glass p-8 rounded-lg hover:border-primary/50 transition-all cursor-pointer group">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <Users className="w-6 h-6 text-primary" />
+            {[
+              {
+                icon: Users,
+                title: 'Join Teams',
+                description: 'Students join virtual "startup teams" to execute real business projects together.',
+                color: '#6AC670',
+              },
+              {
+                icon: Zap,
+                title: 'AI-Powered Tools',
+                description: 'Claude AI assistant built directly into the platform guides you through every project.',
+                color: '#F2CF07',
+              },
+              {
+                icon: TrendingUp,
+                title: 'Get Paid & Grow',
+                description: 'Earn $20-30/hour while building your portfolio and leveling up your skills.',
+                color: '#00d9ff',
+              },
+            ].map((feature, i) => (
+              <div
+                key={i}
+                className="fade-in-on-scroll glass p-8 rounded-lg hover:border-[#6AC670]/50 transition-all cursor-pointer group"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                <div
+                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-all"
+                  style={{
+                    background: `${feature.color}15`,
+                  }}
+                >
+                  <feature.icon className="w-6 h-6" style={{ color: feature.color }} />
+                </div>
+                <h3 className="text-xl font-heading font-bold mb-3">{feature.title}</h3>
+                <p className="text-white/60">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">Join Teams</h3>
-              <p className="text-gray-400">
-                Students join virtual "startup teams" to execute real business projects together.
-              </p>
-            </div>
-
-            <div className="glass p-8 rounded-lg hover:border-primary/50 transition-all cursor-pointer group">
-              <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
-                <Zap className="w-6 h-6 text-secondary" />
-              </div>
-              <h3 className="text-xl font-heading font-bold mb-3">AI-Powered Tools</h3>
-              <p className="text-gray-400">
-                Claude AI assistant built directly into the platform guides you through every project.
-              </p>
-            </div>
-
-            <div className="glass p-8 rounded-lg hover:border-primary/50 transition-all cursor-pointer group">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
-                <TrendingUp className="w-6 h-6 text-accent" />
-              </div>
-              <h3 className="text-xl font-heading font-bold mb-3">Get Paid & Grow</h3>
-              <p className="text-gray-400">
-                Earn $20-30/hour while building your portfolio and leveling up your skills.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* For Companies */}
-      <section id="for-companies" className="py-20 px-4">
+      <section id="for-companies" className="py-20 px-4 relative">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block px-4 py-2 bg-success/10 border border-success/20 rounded-full text-sm text-success mb-4">
+            <div className="fade-in-on-scroll">
+              <div className="inline-block px-4 py-2 bg-[#00ff88]/10 border border-[#00ff88]/20 rounded-full text-sm text-[#00ff88] mb-4">
                 For Companies
               </div>
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Get Marketing, Research & Analysis Done at <span className="text-success">80% Lower Cost</span>
+                Get Marketing, Research & Analysis Done at <span className="text-[#00ff88]">80% Lower Cost</span>
               </h2>
-              <p className="text-xl text-gray-400 mb-8">
+              <p className="text-xl text-white/60 mb-8">
                 Access Gen Z talent that thinks in AI workflows. High quality work with cutting-edge tools.
               </p>
 
@@ -166,48 +338,38 @@ export default function Home() {
                   "Money-back guarantee on all projects"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-success"></div>
+                    <div className="w-6 h-6 rounded-full bg-[#00ff88]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-2 h-2 rounded-full bg-[#00ff88]"></div>
                     </div>
-                    <span className="text-gray-300">{item}</span>
+                    <span className="text-white/70">{item}</span>
                   </li>
                 ))}
               </ul>
 
               <Link
                 href="/sign-up?role=company"
-                className="gradient-btn px-8 py-4 rounded-lg font-semibold text-white inline-flex items-center gap-2"
+                className="gradient-btn px-8 py-4 rounded-lg font-semibold text-[#0a0a0a] inline-flex items-center gap-2"
               >
                 Post Your First Project
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
 
-            <div className="glass p-8 rounded-lg">
+            <div className="fade-in-on-scroll glass p-8 rounded-lg">
               <div className="space-y-6">
-                <div className="flex items-start gap-4 p-4 bg-background rounded-lg">
-                  <Shield className="w-6 h-6 text-primary flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Escrow Protection</h4>
-                    <p className="text-sm text-gray-400">Payment held until you approve the work</p>
+                {[
+                  { icon: Shield, title: 'Escrow Protection', description: 'Payment held until you approve the work' },
+                  { icon: Star, title: 'Vetted Talent', description: 'AI assessment + rating system ensures quality' },
+                  { icon: Zap, title: 'Fast Turnaround', description: 'Most projects completed in 1-2 weeks' },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-4 p-4 bg-[#0a0a0a]/50 rounded-lg">
+                    <item.icon className="w-6 h-6 text-[#6AC670] flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold mb-1">{item.title}</h4>
+                      <p className="text-sm text-white/60">{item.description}</p>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-4 bg-background rounded-lg">
-                  <Star className="w-6 h-6 text-primary flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Vetted Talent</h4>
-                    <p className="text-sm text-gray-400">AI assessment + rating system ensures quality</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-4 bg-background rounded-lg">
-                  <Zap className="w-6 h-6 text-primary flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Fast Turnaround</h4>
-                    <p className="text-sm text-gray-400">Most projects completed in 1-2 weeks</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -215,44 +377,40 @@ export default function Home() {
       </section>
 
       {/* For Students */}
-      <section id="for-students" className="py-20 px-4 bg-card/50">
+      <section id="for-students" className="py-20 px-4 bg-white/5 relative">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1 glass p-8 rounded-lg">
+            <div className="order-2 md:order-1 fade-in-on-scroll glass p-8 rounded-lg">
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-background rounded-lg">
-                  <span className="text-sm text-gray-400">LinkedIn Posts Project</span>
-                  <span className="text-success font-semibold">+$375</span>
-                </div>
+                {[
+                  { label: 'LinkedIn Posts Project', amount: '+$375' },
+                  { label: 'Social Media Graphics', amount: '+$200' },
+                  { label: 'Email Campaign Copy', amount: '+$300' },
+                ].map((project, i) => (
+                  <div key={i} className="flex items-center justify-between p-4 bg-[#0a0a0a]/50 rounded-lg">
+                    <span className="text-sm text-white/60">{project.label}</span>
+                    <span className="text-[#00ff88] font-semibold">{project.amount}</span>
+                  </div>
+                ))}
 
-                <div className="flex items-center justify-between p-4 bg-background rounded-lg">
-                  <span className="text-sm text-gray-400">Social Media Graphics</span>
-                  <span className="text-success font-semibold">+$200</span>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-background rounded-lg">
-                  <span className="text-sm text-gray-400">Email Campaign Copy</span>
-                  <span className="text-success font-semibold">+$300</span>
-                </div>
-
-                <div className="border-t border-border pt-4">
+                <div className="border-t border-white/10 pt-4">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">This Month</span>
-                    <span className="text-2xl font-heading font-bold text-success">$875</span>
+                    <span className="text-2xl font-heading font-bold text-[#00ff88]">$875</span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">Working 10-15 hours/week</p>
+                  <p className="text-xs text-white/40 mt-1">Working 10-15 hours/week</p>
                 </div>
               </div>
             </div>
 
-            <div className="order-1 md:order-2">
-              <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm text-primary mb-4">
+            <div className="order-1 md:order-2 fade-in-on-scroll">
+              <div className="inline-block px-4 py-2 bg-[#6AC670]/10 border border-[#6AC670]/20 rounded-full text-sm text-[#6AC670] mb-4">
                 For Students
               </div>
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Earn While You Learn Through <span className="text-primary">Real Client Work</span>
+                Earn While You Learn Through <span className="text-[#6AC670]">Real Client Work</span>
               </h2>
-              <p className="text-xl text-gray-400 mb-8">
+              <p className="text-xl text-white/60 mb-8">
                 Build your portfolio, master AI tools, and get paid $20-30/hour for work that actually matters.
               </p>
 
@@ -265,17 +423,17 @@ export default function Home() {
                   "Get paid directly to your bank account"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-primary"></div>
+                    <div className="w-6 h-6 rounded-full bg-[#6AC670]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-2 h-2 rounded-full bg-[#6AC670]"></div>
                     </div>
-                    <span className="text-gray-300">{item}</span>
+                    <span className="text-white/70">{item}</span>
                   </li>
                 ))}
               </ul>
 
               <Link
                 href="/sign-up?role=student"
-                className="gradient-btn px-8 py-4 rounded-lg font-semibold text-white inline-flex items-center gap-2"
+                className="gradient-btn px-8 py-4 rounded-lg font-semibold text-[#0a0a0a] inline-flex items-center gap-2"
               >
                 Start Building Today
                 <ArrowRight className="w-5 h-5" />
@@ -286,20 +444,20 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 relative">
         <div className="container mx-auto max-w-4xl">
-          <div className="glass p-12 rounded-2xl text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10"></div>
+          <div className="fade-in-on-scroll glass p-12 rounded-2xl text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#6AC670]/10 via-[#F2CF07]/10 to-[#00d9ff]/10"></div>
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4 gradient-text">
                 Ready to Forge Your Future?
               </h2>
-              <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+              <p className="text-xl text-white/60 mb-8 max-w-2xl mx-auto">
                 Join the next generation of work. AI-powered. Student-driven. Results-focused.
               </p>
               <Link
                 href="/sign-up"
-                className="gradient-btn px-10 py-5 rounded-lg text-lg font-semibold text-white inline-flex items-center gap-2 glow"
+                className="gradient-btn px-10 py-5 rounded-lg text-lg font-semibold text-[#0a0a0a] inline-flex items-center gap-2 glow-gradient"
               >
                 Get Started Free
                 <ArrowRight className="w-6 h-6" />
@@ -310,54 +468,72 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 border-t border-border">
+      <footer className="py-12 px-4 border-t border-white/10 relative">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
+                <div className="relative w-8 h-8">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#6AC670] to-[#F2CF07] rounded-lg blur-md opacity-75" />
+                  <div className="relative w-8 h-8 bg-gradient-to-br from-[#6AC670] to-[#F2CF07] rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-[#0a0a0a]" />
+                  </div>
                 </div>
-                <span className="text-xl font-heading font-bold">MLV Forge</span>
+                <span className="text-xl font-heading font-bold gradient-text">MLV Forge</span>
               </div>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-white/60">
                 Where AI Meets Ambition
               </p>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-3">Product</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-primary transition-colors">How It Works</Link></li>
-                <li><Link href="#" className="hover:text-primary transition-colors">Pricing</Link></li>
-                <li><Link href="#" className="hover:text-primary transition-colors">Features</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-3">Company</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-primary transition-colors">About Us</Link></li>
-                <li><Link href="#" className="hover:text-primary transition-colors">Blog</Link></li>
-                <li><Link href="#" className="hover:text-primary transition-colors">Careers</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-3">Legal</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-                <li><Link href="#" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-                <li><Link href="#" className="hover:text-primary transition-colors">Cookie Policy</Link></li>
-              </ul>
-            </div>
+            {[
+              {
+                title: 'Product',
+                links: ['How It Works', 'Pricing', 'Features']
+              },
+              {
+                title: 'Company',
+                links: ['About Us', 'Blog', 'Careers']
+              },
+              {
+                title: 'Legal',
+                links: ['Privacy Policy', 'Terms of Service', 'Cookie Policy']
+              }
+            ].map((section, i) => (
+              <div key={i}>
+                <h4 className="font-semibold mb-3">{section.title}</h4>
+                <ul className="space-y-2 text-sm text-white/60">
+                  {section.links.map((link, j) => (
+                    <li key={j}>
+                      <Link href="#" className="hover:text-[#6AC670] transition-colors">
+                        {link}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
-          <div className="pt-8 border-t border-border text-center text-sm text-gray-400">
+          <div className="pt-8 border-t border-white/10 text-center text-sm text-white/40">
             <p>&copy; {new Date().getFullYear()} MLV Forge. All rights reserved.</p>
           </div>
         </div>
       </footer>
+
+      {/* Add fade-in-on-scroll styles */}
+      <style jsx global>{`
+        .fade-in-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
     </div>
   );
 }
