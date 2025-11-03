@@ -1,53 +1,75 @@
 @import "tailwindcss";
 
-/* MLV Forge Design System */
+/* MLV Forge - Dark AI Design System */
 :root {
-  /* Primary Colors */
-  --electric-blue: #0066FF;
-  --deep-purple: #6B46FF;
-  --cyber-cyan: #00F0FF;
+  /* MLV Brand Colors */
+  --mlv-green: #6AC670;
+  --mlv-yellow: #F2CF07;
+  --neon-green: #00ff88;
+  --neon-yellow: #ffeb3b;
 
-  /* Dark Mode Colors */
-  --void-black: #0A0A0A;
-  --neural-gray: #1A1A1A;
-  --ghost-white: #F8F9FA;
+  /* Dark Cyber Colors */
+  --cyber-black: #0a0a0a;
+  --cyber-dark: #1a1a1a;
+  --cyber-gray: #2a2a2a;
+  --cyber-cyan: #00d9ff;
+  --cyber-purple: #9333ea;
 
-  /* Accent Colors */
-  --neon-green: #00FF88;
-  --warning-orange: #FF6B35;
-  --error-red: #FF3366;
+  /* Text Colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+  --text-tertiary: #808080;
+  --text-muted: #505050;
 
   /* Neutral Scale */
-  --gray-900: #0D0D0D;
-  --gray-800: #1A1A1A;
-  --gray-700: #333333;
-  --gray-600: #666666;
-  --gray-500: #999999;
+  --gray-900: #0a0a0a;
+  --gray-800: #1a1a1a;
+  --gray-700: #2a2a2a;
+  --gray-600: #808080;
+  --gray-500: #B0B0B0;
   --gray-400: #CCCCCC;
   --gray-300: #E5E5E5;
   --gray-200: #F2F2F2;
   --gray-100: #F8F9FA;
 
-  /* Dark Mode First */
-  --background: var(--void-black);
-  --foreground: var(--ghost-white);
-  --card-bg: var(--neural-gray);
+  /* Error Colors */
+  --error-red: #dc2626;
+  --success-green: #00ff88;
+
+  /* Theme Variables */
+  --background: var(--cyber-black);
+  --foreground: var(--text-primary);
+  --card-bg: var(--cyber-dark);
   --border: rgba(255, 255, 255, 0.1);
 }
 
 @theme inline {
-  /* Colors */
-  --color-primary: var(--electric-blue);
-  --color-secondary: var(--deep-purple);
-  --color-accent: var(--cyber-cyan);
-  --color-success: var(--neon-green);
-  --color-warning: var(--warning-orange);
-  --color-error: var(--error-red);
+  /* MLV Brand Colors */
+  --color-mlv-green: var(--mlv-green);
+  --color-mlv-yellow: var(--mlv-yellow);
+  --color-neon-green: var(--neon-green);
+  --color-neon-yellow: var(--neon-yellow);
 
+  /* Cyber Colors */
+  --color-cyber-black: var(--cyber-black);
+  --color-cyber-dark: var(--cyber-dark);
+  --color-cyber-gray: var(--cyber-gray);
+  --color-cyber-cyan: var(--cyber-cyan);
+  --color-cyber-purple: var(--cyber-purple);
+
+  /* Text Colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-muted: var(--text-muted);
+
+  /* Theme Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card-bg);
   --color-border: var(--border);
+  --color-error: var(--error-red);
+  --color-success: var(--success-green);
 
   /* Grays */
   --color-gray-900: var(--gray-900);
@@ -72,9 +94,13 @@
   --radius-xl: 24px;
 
   /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow-sm: 0 0 10px rgba(106, 198, 112, 0.3);
+  --shadow-glow-md: 0 0 20px rgba(106, 198, 112, 0.4);
+  --shadow-glow-lg: 0 0 40px rgba(106, 198, 112, 0.5);
+  --shadow-glow-gradient: 0 0 20px rgba(106, 198, 112, 0.4), 0 0 40px rgba(242, 207, 7, 0.3);
 
   /* Animations */
   --duration-fast: 150ms;
@@ -82,12 +108,9 @@
   --duration-slow: 500ms;
 }
 
-/* Light mode (optional) */
-[data-theme="light"] {
-  --background: var(--ghost-white);
-  --foreground: var(--void-black);
-  --card-bg: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -100,79 +123,122 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar with Gradient */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--gray-800);
+  background: var(--cyber-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gray-600);
+  background: linear-gradient(180deg, var(--mlv-green) 0%, var(--mlv-yellow) 100%);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gray-500);
+  background: linear-gradient(180deg, var(--neon-green) 0%, var(--neon-yellow) 100%);
 }
 
 /* Selection */
 ::selection {
-  background: var(--electric-blue);
+  background: rgba(106, 198, 112, 0.3);
   color: white;
 }
 
-/* Headings */
+/* Headings with Gradient */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), var(--font-sans);
   font-weight: 700;
   line-height: 1.2;
 }
 
-/* Glassmorphism utility class */
+/* Glassmorphism */
 .glass {
-  background: rgba(26, 26, 26, 0.8);
+  background: rgba(26, 26, 26, 0.7);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-/* Gradient button utility */
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--mlv-green) 0%, var(--mlv-yellow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient Button */
 .gradient-btn {
-  background: linear-gradient(135deg, var(--electric-blue) 0%, var(--cyber-cyan) 100%);
+  background: linear-gradient(135deg, var(--mlv-green) 0%, var(--mlv-yellow) 100%);
   transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  box-shadow: 0 4px 12px rgba(106, 198, 112, 0.3);
 }
 
 .gradient-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
+  box-shadow: 0 0 20px rgba(106, 198, 112, 0.5), 0 0 40px rgba(242, 207, 7, 0.3);
 }
 
-/* Glow effect */
-.glow {
-  box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+/* Glow Effects */
+.glow-green {
+  box-shadow: 0 0 20px rgba(106, 198, 112, 0.5),
+              0 0 40px rgba(106, 198, 112, 0.3),
+              0 0 60px rgba(106, 198, 112, 0.1);
 }
 
-/* Neumorphism */
-.neumorphic {
-  background: var(--neural-gray);
-  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.4),
-              -8px -8px 16px rgba(255, 255, 255, 0.02);
+.glow-gradient {
+  box-shadow: 0 0 20px rgba(106, 198, 112, 0.4),
+              0 0 40px rgba(242, 207, 7, 0.3);
 }
 
-/* Focus styles */
+.glow-text {
+  text-shadow: 0 0 20px rgba(106, 198, 112, 0.5),
+               0 0 40px rgba(242, 207, 7, 0.3);
+}
+
+/* Focus Styles */
 *:focus-visible {
-  outline: 2px solid var(--electric-blue);
+  outline: 2px solid var(--mlv-green);
   outline-offset: 2px;
 }
 
 /* Animations */
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-20px) translateX(10px); }
+  50% { transform: translateY(-40px) translateX(-10px); }
+  75% { transform: translateY(-20px) translateX(10px); }
+}
+
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+@keyframes scanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100px); }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -192,12 +258,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Utility Animation Classes */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-grid-move {
+  animation: gridMove 20s linear infinite;
+}
+
+.animate-scan {
+  animation: scanlines 8s linear infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
 }
 
 .animate-fade-in {
@@ -210,4 +294,24 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Cyber Border Effect */
+.cyber-border {
+  position: relative;
+}
+
+.cyber-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, var(--mlv-green) 0%, var(--mlv-yellow) 100%);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.cyber-border:hover::before {
+  opacity: 0.5;
+  animation: glow 2s ease-in-out infinite;
 }

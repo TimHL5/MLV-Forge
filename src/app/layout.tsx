@@ -41,28 +41,28 @@ export default function RootLayout({
   return (
     <ClerkProvider
       appearance={{
-        baseTheme: undefined, // Don't use Clerk's base themes
+        baseTheme: undefined,
         variables: {
-          // Primary brand colors
-          colorPrimary: '#6AC670', // MLV Green
-          colorSuccess: '#6AC670', // MLV Green
-          colorWarning: '#F2CF07', // MLV Yellow
-          colorDanger: '#dc2626', // Red for errors
+          // MLV Brand Colors
+          colorPrimary: '#6AC670',
+          colorSuccess: '#6AC670',
+          colorWarning: '#F2CF07',
+          colorDanger: '#dc2626',
 
-          // Background colors
-          colorBackground: '#FCFCFC', // Off-white
-          colorInputBackground: '#FFFFFF', // Pure white for inputs
+          // Dark Backgrounds
+          colorBackground: '#0a0a0a',
+          colorInputBackground: '#1a1a1a',
 
-          // Text colors
-          colorText: '#060606', // Pure black
-          colorTextSecondary: '#484848', // Dark gray
+          // Text Colors
+          colorText: '#FFFFFF',
+          colorTextSecondary: '#B0B0B0',
 
-          // Border colors
-          colorInputText: '#060606', // Black text in inputs
-          colorNeutral: '#F3F3F1', // Light gray for borders
+          // Borders
+          colorInputText: '#FFFFFF',
+          colorNeutral: 'rgba(255, 255, 255, 0.1)',
 
           // Spacing
-          borderRadius: '0.5rem', // 8px
+          borderRadius: '0.75rem',
 
           // Font
           fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -75,16 +75,18 @@ export default function RootLayout({
           },
         },
         elements: {
-          // Root card container
+          // Root container
           rootBox: {
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 0 40px rgba(106, 198, 112, 0.2)',
           },
 
-          // Main card
+          // Main card with glassmorphism
           card: {
-            backgroundColor: '#FFFFFF',
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
-            border: '1px solid #F3F3F1',
+            backgroundColor: 'rgba(26, 26, 26, 0.7)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
           },
 
           // Header with gradient
@@ -95,81 +97,81 @@ export default function RootLayout({
             backgroundClip: 'text',
             fontSize: '2rem',
             fontWeight: 700,
+            filter: 'drop-shadow(0 0 20px rgba(106, 198, 112, 0.3))',
           },
 
           headerSubtitle: {
-            color: '#484848',
+            color: '#B0B0B0',
             fontSize: '1rem',
           },
 
-          // Social buttons (Google, LinkedIn)
+          // Social buttons
           socialButtonsBlockButton: {
-            backgroundColor: '#FFFFFF',
-            border: '2px solid #F3F3F1',
-            color: '#060606',
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: '#FFFFFF',
             fontWeight: 500,
             '&:hover': {
-              backgroundColor: '#F3F3F1',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
               borderColor: '#6AC670',
             },
           },
 
           socialButtonsBlockButtonText: {
-            color: '#060606',
+            color: '#FFFFFF',
             fontWeight: 500,
           },
 
           // Divider
           dividerLine: {
-            backgroundColor: '#F3F3F1',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
           },
 
           dividerText: {
-            color: '#484848',
+            color: '#B0B0B0',
             fontSize: '0.875rem',
           },
 
           // Form fields
           formFieldLabel: {
-            color: '#060606',
+            color: '#FFFFFF',
             fontWeight: 500,
             marginBottom: '0.5rem',
           },
 
           formFieldInput: {
-            backgroundColor: '#FFFFFF',
-            border: '2px solid #F3F3F1',
-            color: '#060606',
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: '#FFFFFF',
             fontSize: '1rem',
             '&:focus': {
               borderColor: '#6AC670',
-              boxShadow: '0 0 0 3px rgba(106, 198, 112, 0.1)',
+              boxShadow: '0 0 0 3px rgba(106, 198, 112, 0.2)',
             },
             '&::placeholder': {
-              color: '#484848',
+              color: '#808080',
             },
           },
 
-          // Primary button (Continue, Sign in, Sign up)
+          // Primary button with gradient and glow
           formButtonPrimary: {
             background: 'linear-gradient(135deg, #6AC670 0%, #F2CF07 100%)',
-            color: '#060606',
+            color: '#0a0a0a',
             fontWeight: 600,
             fontSize: '1rem',
             border: 'none',
-            boxShadow: '0 4px 12px rgba(106, 198, 112, 0.3)',
+            boxShadow: '0 0 20px rgba(106, 198, 112, 0.4), 0 0 40px rgba(242, 207, 7, 0.3)',
             '&:hover': {
               background: 'linear-gradient(135deg, #5AB560 0%, #E2BF07 100%)',
-              boxShadow: '0 6px 16px rgba(106, 198, 112, 0.4)',
-            },
-            '&:active': {
-              transform: 'translateY(1px)',
+              boxShadow: '0 0 30px rgba(106, 198, 112, 0.6), 0 0 60px rgba(242, 207, 7, 0.4)',
             },
           },
 
-          // Footer link (Don't have an account? Sign up)
+          // Footer links
           footerActionText: {
-            color: '#484848',
+            color: '#B0B0B0',
           },
 
           footerActionLink: {
@@ -187,30 +189,31 @@ export default function RootLayout({
             fontSize: '0.875rem',
           },
 
-          // Alert/notification banners
+          // Alert banners
           alert: {
-            backgroundColor: '#FFFDF5', // Cream
-            border: '1px solid #F2CF07',
-            color: '#060606',
+            backgroundColor: 'rgba(242, 207, 7, 0.1)',
+            border: '1px solid rgba(242, 207, 7, 0.3)',
+            color: '#FFFFFF',
           },
 
-          // User button (after sign-in)
+          // User button popover
           userButtonPopoverCard: {
-            backgroundColor: '#FFFFFF',
-            border: '1px solid #F3F3F1',
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
+            backgroundColor: 'rgba(26, 26, 26, 0.9)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
           },
 
           userButtonPopoverActionButton: {
-            color: '#060606',
+            color: '#FFFFFF',
             '&:hover': {
-              backgroundColor: '#F3F3F1',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
             },
           },
 
-          // Identity preview (user info display)
+          // Identity preview
           identityPreviewText: {
-            color: '#060606',
+            color: '#FFFFFF',
           },
 
           identityPreviewEditButton: {
@@ -222,7 +225,7 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="en" className="dark">
+      <html lang="en">
         <body
           className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
         >
