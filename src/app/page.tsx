@@ -84,21 +84,19 @@ export default function Home() {
       <GradientOrbs />
       <FloatingParticles />
 
-      {/* Navigation - becomes solid on scroll */}
+      {/* Navigation - more visible against dark background */}
       <nav
         className="fixed top-0 z-50 w-full transition-all duration-300"
         style={{
           background: scrollY > 50
-            ? 'rgba(10, 10, 10, 0.95)'
-            : 'rgba(10, 10, 10, 0.5)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          borderBottom: scrollY > 50
-            ? '1px solid rgba(255, 255, 255, 0.1)'
-            : '1px solid rgba(255, 255, 255, 0.05)',
+            ? 'linear-gradient(180deg, rgba(10, 10, 10, 0.98) 0%, rgba(10, 10, 10, 0.92) 100%)'
+            : 'rgba(10, 10, 10, 0.95)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
           boxShadow: scrollY > 50
-            ? '0 4px 16px rgba(0, 0, 0, 0.3)'
-            : 'none',
+            ? '0 4px 24px rgba(0, 0, 0, 0.4)'
+            : '0 2px 12px rgba(0, 0, 0, 0.2)',
         }}
       >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
