@@ -138,16 +138,16 @@ export default function Home() {
               How It Works
             </Link>
             <Link
-              href="#for-companies"
+              href="#for-posters"
               className="text-sm text-white/80 hover:text-white hover:drop-shadow-[0_0_8px_rgba(106,198,112,0.5)] transition-all"
             >
-              For Companies
+              For Task Posters
             </Link>
             <Link
-              href="#for-students"
+              href="#for-doers"
               className="text-sm text-white/80 hover:text-white hover:drop-shadow-[0_0_8px_rgba(106,198,112,0.5)] transition-all"
             >
-              For Students
+              For Task Doers
             </Link>
           </div>
 
@@ -187,7 +187,7 @@ export default function Home() {
                 <div className="relative w-2 h-2 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] rounded-full" />
               </div>
               <span className="text-sm font-mono font-medium text-white/80 tracking-wider">
-                AI_POWERED_WORKSPACE.EXE
+                AI_POWERED_TASK_ENGINE.EXE
               </span>
             </div>
 
@@ -205,30 +205,31 @@ export default function Home() {
 
             {/* Subheadline */}
             <p className="text-xl md:text-2xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">
-              Get paid. Build your portfolio. Work on <span className="text-[#6AC670] font-medium">real projects</span> with{' '}
-              <span className="text-[#F2CF07] font-medium">cutting-edge AI tools</span> built into the platform.
+              Post any digital task. Get it done by skilled doers using{' '}
+              <span className="text-[#6AC670] font-medium">cutting-edge AI tools</span>. Video editing. Research. Design. Code. Analysis. All powered by{' '}
+              <span className="text-[#F2CF07] font-medium">AI built into every workflow</span>.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Link
-                href="/sign-up?role=student"
+                href="/sign-up?role=doer"
                 className="group relative w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] text-[#0a0a0a] font-bold text-lg rounded-xl overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] blur-xl opacity-75 group-hover:opacity-100 transition-opacity" />
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  I'm a Student
+                  Start Earning
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
 
               <Link
-                href="/sign-up?role=company"
+                href="/sign-up?role=poster"
                 className="group relative w-full sm:w-auto px-8 py-4 bg-white/5 backdrop-blur-sm text-white font-bold text-lg rounded-xl border border-white/20 hover:border-[#6AC670] hover:bg-white/10 transition-all overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#6AC670]/20 to-[#F2CF07]/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  I'm a Company
+                  Post a Task
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
@@ -244,8 +245,8 @@ export default function Home() {
               }}
             >
               {[
-                { value: '$20-30', label: 'Per Hour', delay: '0s' },
-                { value: '80%', label: 'Cost Savings', delay: '0.1s' },
+                { value: '$15-50/task', label: 'Per Task Range', delay: '0s' },
+                { value: '10min', label: 'Average Match Time', delay: '0.1s' },
                 { value: '24/7', label: 'AI Assistant', delay: '0.2s' },
               ].map((stat, i) => (
                 <div
@@ -289,15 +290,15 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
       </section>
 
-      {/* Features Section */}
+      {/* How It Works Section */}
       <section id="how-it-works" className="py-20 px-4 relative">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16 fade-in-on-scroll">
             <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4 gradient-text">
-              How MLV Forge Works
+              How It Works
             </h2>
             <p className="text-xl text-white/60">
-              AI-powered platform connecting Gen Z talent with real business projects
+              Post tasks. Match with skilled doers. Get AI-powered results in minutes.
             </p>
           </div>
 
@@ -305,21 +306,21 @@ export default function Home() {
             {[
               {
                 icon: Users,
-                title: 'Join Teams',
-                description: 'Students join virtual "startup teams" to execute real business projects together.',
+                title: '1. Post Your Task',
+                description: 'Describe any digital task - video editing, research, design, code, analysis. Set your budget and deadline.',
                 color: '#6AC670',
               },
               {
                 icon: Zap,
-                title: 'AI-Powered Tools',
-                description: 'Claude AI assistant built directly into the platform guides you through every project.',
+                title: '2. AI Matches You',
+                description: 'Our AI instantly matches your task with skilled doers who have the right tools and experience.',
                 color: '#F2CF07',
               },
               {
                 icon: TrendingUp,
-                title: 'Get Paid & Grow',
-                description: 'Earn $20-30/hour while building your portfolio and leveling up your skills.',
-                color: '#00d9ff',
+                title: '3. Get Results Fast',
+                description: 'Doers use cutting-edge AI tools to deliver high-quality work. Review and approve in your dashboard.',
+                color: '#6AC670',
               },
             ].map((feature, i) => (
               <div
@@ -345,32 +346,32 @@ export default function Home() {
         </div>
       </section>
 
-      {/* For Companies */}
-      <section id="for-companies" className="py-20 px-4 relative">
+      {/* For Task Posters */}
+      <section id="for-posters" className="py-20 px-4 relative">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="fade-in-on-scroll">
-              <div className="inline-block px-4 py-2 bg-[#00ff88]/10 border border-[#00ff88]/20 rounded-full text-sm text-[#00ff88] mb-4">
-                For Companies
+              <div className="inline-block px-4 py-2 bg-[#F2CF07]/10 border border-[#F2CF07]/20 rounded-full text-sm text-[#F2CF07] mb-4">
+                For Task Posters
               </div>
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Get Marketing, Research & Analysis Done at <span className="text-[#00ff88]">80% Lower Cost</span>
+                Get Any Digital Task Done at <span className="text-[#F2CF07]">10X the Speed</span>
               </h2>
               <p className="text-xl text-white/60 mb-8">
-                Access Gen Z talent that thinks in AI workflows. High quality work with cutting-edge tools.
+                Post a task, get matched with AI-powered doers, and receive high-quality work in hours, not days.
               </p>
 
               <ul className="space-y-4 mb-8">
                 {[
-                  "AI-augmented college students ready to work",
-                  "Fixed pricing - no hourly surprises",
-                  "Built-in project management & chat",
-                  "Quality checked by AI before delivery",
-                  "Money-back guarantee on all projects"
+                  "AI matches you with the perfect doer instantly",
+                  "Fixed pricing - $15-50 per task, no surprises",
+                  "Quality guaranteed or money back",
+                  "Track progress in real-time dashboard",
+                  "Doers use cutting-edge AI tools (Claude, Midjourney, etc.)"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-[#00ff88]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-[#00ff88]"></div>
+                    <div className="w-6 h-6 rounded-full bg-[#F2CF07]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-2 h-2 rounded-full bg-[#F2CF07]"></div>
                     </div>
                     <span className="text-white/70">{item}</span>
                   </li>
@@ -378,10 +379,10 @@ export default function Home() {
               </ul>
 
               <Link
-                href="/sign-up?role=company"
+                href="/sign-up?role=poster"
                 className="gradient-btn px-8 py-4 rounded-lg font-semibold text-[#0a0a0a] inline-flex items-center gap-2"
               >
-                Post Your First Project
+                Post Your First Task
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -390,8 +391,8 @@ export default function Home() {
               <div className="space-y-6">
                 {[
                   { icon: Shield, title: 'Escrow Protection', description: 'Payment held until you approve the work' },
-                  { icon: Star, title: 'Vetted Talent', description: 'AI assessment + rating system ensures quality' },
-                  { icon: Zap, title: 'Fast Turnaround', description: 'Most projects completed in 1-2 weeks' },
+                  { icon: Star, title: 'AI-Vetted Doers', description: 'Every doer is assessed and rated by our AI' },
+                  { icon: Zap, title: 'Lightning Fast', description: 'Average match time: 10 minutes' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-4 p-4 bg-[#0a0a0a]/50 rounded-lg">
                     <item.icon className="w-6 h-6 text-[#6AC670] flex-shrink-0" />
@@ -407,51 +408,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* For Students */}
-      <section id="for-students" className="py-20 px-4 bg-white/5 relative">
+      {/* For Task Doers */}
+      <section id="for-doers" className="py-20 px-4 bg-white/5 relative">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1 fade-in-on-scroll glass p-8 rounded-lg">
               <div className="space-y-4">
                 {[
-                  { label: 'LinkedIn Posts Project', amount: '+$375' },
-                  { label: 'Social Media Graphics', amount: '+$200' },
-                  { label: 'Email Campaign Copy', amount: '+$300' },
+                  { label: 'Video Editing Task', amount: '+$45' },
+                  { label: 'Market Research', amount: '+$30' },
+                  { label: 'Logo Design', amount: '+$50' },
+                  { label: 'Data Analysis', amount: '+$40' },
                 ].map((project, i) => (
                   <div key={i} className="flex items-center justify-between p-4 bg-[#0a0a0a]/50 rounded-lg">
                     <span className="text-sm text-white/60">{project.label}</span>
-                    <span className="text-[#00ff88] font-semibold">{project.amount}</span>
+                    <span className="text-[#6AC670] font-semibold">{project.amount}</span>
                   </div>
                 ))}
 
                 <div className="border-t border-white/10 pt-4">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold">This Month</span>
-                    <span className="text-2xl font-heading font-bold text-[#00ff88]">$875</span>
+                    <span className="font-semibold">This Week</span>
+                    <span className="text-2xl font-heading font-bold text-[#6AC670]">$165</span>
                   </div>
-                  <p className="text-xs text-white/40 mt-1">Working 10-15 hours/week</p>
+                  <p className="text-xs text-white/40 mt-1">4 tasks completed • AI assisted</p>
                 </div>
               </div>
             </div>
 
             <div className="order-1 md:order-2 fade-in-on-scroll">
               <div className="inline-block px-4 py-2 bg-[#6AC670]/10 border border-[#6AC670]/20 rounded-full text-sm text-[#6AC670] mb-4">
-                For Students
+                For Task Doers
               </div>
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Earn While You Learn Through <span className="text-[#6AC670]">Real Client Work</span>
+                Build Skills + Earn Money With <span className="text-[#6AC670]">AI As Your Co-Pilot</span>
               </h2>
               <p className="text-xl text-white/60 mb-8">
-                Build your portfolio, master AI tools, and get paid $20-30/hour for work that actually matters.
+                Browse tasks, work with our built-in AI assistant, and deliver professional results—even while you're still learning.
               </p>
 
               <ul className="space-y-4 mb-8">
                 {[
-                  "Work 10-15 hours/week around your classes",
-                  "AI mentor guides you through every project",
-                  "Build a portfolio that gets you hired",
-                  "Level up to unlock higher-paying work",
-                  "Get paid directly to your bank account"
+                  "AI workspace guides you through every task",
+                  "Learn new skills while getting paid",
+                  "No experience required - AI helps you level up",
+                  "Build a portfolio of real work",
+                  "Flexible schedule - work on your time"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-[#6AC670]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -463,10 +465,10 @@ export default function Home() {
               </ul>
 
               <Link
-                href="/sign-up?role=student"
+                href="/sign-up?role=doer"
                 className="gradient-btn px-8 py-4 rounded-lg font-semibold text-[#0a0a0a] inline-flex items-center gap-2"
               >
-                Start Building Today
+                Start Earning Today
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -478,21 +480,30 @@ export default function Home() {
       <section className="py-20 px-4 relative">
         <div className="container mx-auto max-w-4xl">
           <div className="fade-in-on-scroll glass p-12 rounded-2xl text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#6AC670]/10 via-[#F2CF07]/10 to-[#00d9ff]/10"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#6AC670]/10 via-[#F2CF07]/10 to-[#6AC670]/10"></div>
             <div className="relative z-10">
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4 gradient-text">
-                Ready to Forge Your Future?
+                Ready to Get Things Done?
               </h2>
               <p className="text-xl text-white/60 mb-8 max-w-2xl mx-auto">
-                Join the next generation of work. AI-powered. Student-driven. Results-focused.
+                Join the marketplace where tasks meet AI. Post your first task or start earning today.
               </p>
-              <Link
-                href="/sign-up"
-                className="gradient-btn px-10 py-5 rounded-lg text-lg font-semibold text-[#0a0a0a] inline-flex items-center gap-2 glow-gradient"
-              >
-                Get Started Free
-                <ArrowRight className="w-6 h-6" />
-              </Link>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link
+                  href="/sign-up?role=poster"
+                  className="gradient-btn px-10 py-5 rounded-lg text-lg font-semibold text-[#0a0a0a] inline-flex items-center gap-2 glow-gradient"
+                >
+                  Post a Task
+                  <ArrowRight className="w-6 h-6" />
+                </Link>
+                <Link
+                  href="/sign-up?role=doer"
+                  className="px-10 py-5 rounded-lg text-lg font-semibold text-white bg-white/5 backdrop-blur-sm border border-white/20 hover:border-[#6AC670] hover:bg-white/10 transition-all inline-flex items-center gap-2"
+                >
+                  Start Earning
+                  <ArrowRight className="w-6 h-6" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
