@@ -10,6 +10,7 @@ import { useEffect, useState, useRef } from "react";
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [isNavFloating, setIsNavFloating] = useState(false);
   const [typedText, setTypedText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -25,8 +26,10 @@ export default function Home() {
       // Hide scroll indicator after scrolling 100px
       if (currentScrollY > 100) {
         setShowScrollIndicator(false);
+        setIsNavFloating(true);
       } else {
         setShowScrollIndicator(true);
+        setIsNavFloating(false);
       }
     };
 
@@ -84,18 +87,36 @@ export default function Home() {
       <GradientOrbs />
       <FloatingParticles />
 
-      {/* Navigation - solid dark background with green accent */}
+      {/* Navigation - glassmorphic with floating island effect */}
       <nav
-        className="fixed top-0 z-50 w-full transition-all duration-300"
+        className="fixed z-50 transition-all"
         style={{
-          background: 'linear-gradient(180deg, rgba(26, 26, 26, 0.98) 0%, rgba(20, 20, 20, 0.95) 100%)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(106, 198, 112, 0.3)',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
+          top: isNavFloating ? '20px' : '0',
+          left: isNavFloating ? '50%' : '0',
+          right: isNavFloating ? 'auto' : '0',
+          width: isNavFloating ? 'calc(100% - 80px)' : '100%',
+          maxWidth: isNavFloating ? '1400px' : 'none',
+          transform: isNavFloating ? 'translateX(-50%)' : 'none',
+          borderRadius: isNavFloating ? '16px' : '0',
+          background: isNavFloating ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.08)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          border: isNavFloating ? '1px solid rgba(255, 255, 255, 0.25)' : 'none',
+          borderBottom: isNavFloating ? '1px solid rgba(255, 255, 255, 0.25)' : '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: isNavFloating ? '0 8px 32px rgba(0, 0, 0, 0.4)' : 'none',
+          transitionProperty: 'all',
+          transitionDuration: '0.4s',
+          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div
+          className="mx-auto px-8 flex items-center justify-between"
+          style={{
+            maxWidth: '1400px',
+            height: isNavFloating ? '60px' : '70px',
+            transition: 'height 0.4s ease',
+          }}
+        >
           <div className="flex items-center gap-2">
             <div
               className="relative w-8 h-8"
