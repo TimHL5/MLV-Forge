@@ -10,8 +10,12 @@ import { useEffect, useState, useRef } from "react";
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [typedText, setTypedText] = useState('');
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+
+  const fullText = 'AI Skills';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +32,28 @@ export default function Home() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Typewriter effect for "AI Skills"
+  useEffect(() => {
+    let currentIndex = 0;
+    const typingSpeed = 120; // ms per character
+    const startDelay = 1000; // Wait 1 second before typing
+
+    const startTyping = setTimeout(() => {
+      const typeNextChar = () => {
+        if (currentIndex < fullText.length) {
+          setTypedText(fullText.substring(0, currentIndex + 1));
+          currentIndex++;
+          setTimeout(typeNextChar, typingSpeed);
+        } else {
+          setIsTypingComplete(true);
+        }
+      };
+      typeNextChar();
+    }, startDelay);
+
+    return () => clearTimeout(startTyping);
   }, []);
 
   // Intersection Observer for fade-in animations
@@ -150,23 +176,13 @@ export default function Home() {
               </span>
             </div>
 
-            {/* Main Headline with Fixed Gradient */}
+            {/* Main Headline with Typing Animation */}
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-none tracking-tight">
               <span className="text-white">Turn Your</span>
               <br />
-              <span
-                className="relative inline-block"
-                style={{
-                  color: '#6AC670', // Fallback color
-                  background: 'linear-gradient(135deg, #6AC670 0%, #F2CF07 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  filter: 'drop-shadow(0 0 20px rgba(106, 198, 112, 0.3))',
-                }}
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-[#6AC670] to-[#F2CF07] blur-2xl opacity-50" />
-                <span className="relative">AI Skills</span>
+              <span className="gradient-text-animated">
+                {typedText}
+                {!isTypingComplete && <span className="typing-cursor">|</span>}
               </span>
               <br />
               <span className="text-white">Into Real Work</span>
@@ -521,8 +537,9 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Add fade-in-on-scroll styles */}
+      {/* Add custom styles */}
       <style jsx global>{`
+        /* Fade-in on scroll */
         .fade-in-on-scroll {
           opacity: 0;
           transform: translateY(30px);
@@ -532,6 +549,64 @@ export default function Home() {
         .fade-in-visible {
           opacity: 1;
           transform: translateY(0);
+        }
+
+        /* Gradient text with animation */
+        .gradient-text-animated {
+          background: linear-gradient(135deg, #6AC670 0%, #F2CF07 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          background-size: 200% 200%;
+          animation: gradientShift 3s ease infinite;
+          position: relative;
+          display: inline-block;
+          min-height: 1.2em; /* Prevent layout shift during typing */
+        }
+
+        /* Gradient animation */
+        @keyframes gradientShift {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        /* Typing cursor */
+        .typing-cursor {
+          display: inline-block;
+          width: 3px;
+          height: 1em;
+          background: linear-gradient(135deg, #6AC670 0%, #F2CF07 100%);
+          margin-left: 4px;
+          animation: blink 1s step-end infinite;
+          vertical-align: middle;
+        }
+
+        @keyframes blink {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0;
+          }
+        }
+
+        /* Glow effect for gradient text */
+        .gradient-text-animated::before {
+          content: attr(data-text);
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: -1;
+          background: linear-gradient(135deg, #6AC670 0%, #F2CF07 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          filter: blur(20px);
+          opacity: 0.5;
         }
       `}</style>
     </div>
