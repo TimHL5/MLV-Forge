@@ -84,19 +84,15 @@ export default function Home() {
       <GradientOrbs />
       <FloatingParticles />
 
-      {/* Navigation - more visible against dark background */}
+      {/* Navigation - solid dark background with green accent */}
       <nav
         className="fixed top-0 z-50 w-full transition-all duration-300"
         style={{
-          background: scrollY > 50
-            ? 'linear-gradient(180deg, rgba(10, 10, 10, 0.98) 0%, rgba(10, 10, 10, 0.92) 100%)'
-            : 'rgba(10, 10, 10, 0.95)',
+          background: 'linear-gradient(180deg, rgba(26, 26, 26, 0.98) 0%, rgba(20, 20, 20, 0.95) 100%)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-          boxShadow: scrollY > 50
-            ? '0 4px 24px rgba(0, 0, 0, 0.4)'
-            : '0 2px 12px rgba(0, 0, 0, 0.2)',
+          borderBottom: '1px solid rgba(106, 198, 112, 0.3)',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
         }}
       >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
