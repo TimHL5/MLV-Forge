@@ -45,7 +45,8 @@ export async function POST(req: Request) {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
         // Update payment record in database
-        await db.payment.update({
+        // Using updateMany to avoid unique constraint requirement
+        await db.payment.updateMany({
           where: {
             stripePaymentIntentId: paymentIntent.id,
           },
