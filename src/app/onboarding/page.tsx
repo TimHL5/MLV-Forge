@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
+import { updateUserRole } from "./actions";
 
 export default function OnboardingPage() {
   const { user } = useUser();
@@ -19,14 +20,8 @@ export default function OnboardingPage() {
   const handleRoleSelection = async (selectedRole: "student" | "company") => {
     setLoading(true);
     try {
-      // Update user metadata with selected role
-      await user?.update({
-        publicMetadata: {
-          ...user.publicMetadata,
-          role: selectedRole,
-          onboarded: true,
-        },
-      });
+      // Update user metadata with selected role using server action
+      await updateUserRole(selectedRole);
 
       // Redirect to dashboard
       router.push("/dashboard");

@@ -351,7 +351,7 @@ model Payment {
   amount                Decimal  @db.Decimal(10, 2)
   platformFee           Decimal  @db.Decimal(10, 2) @map("platform_fee")
   status                String   @default("pending") // 'pending', 'held', 'released', 'refunded'
-  stripePaymentIntentId String?  @map("stripe_payment_intent_id")
+  stripePaymentIntentId String?  @unique @map("stripe_payment_intent_id")
   stripeTransferId      String?  @map("stripe_transfer_id")
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
