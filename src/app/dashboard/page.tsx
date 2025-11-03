@@ -17,6 +17,15 @@ export default async function DashboardPage() {
     redirect("/onboarding");
   }
 
+  // Get user role and admin status
+  const role = user.publicMetadata?.role as "doer" | "poster" | undefined;
+  const isAdmin = user.publicMetadata?.isAdmin as boolean;
+
+  // Redirect admins to admin portal
+  if (isAdmin) {
+    redirect("/admin");
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -41,50 +50,79 @@ export default async function DashboardPage() {
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-4xl font-heading font-bold mb-2">Dashboard</h1>
+            <h1 className="text-4xl font-heading font-bold mb-2">
+              {role === "poster" ? "Poster Dashboard" : "Doer Dashboard"}
+            </h1>
             <p className="text-gray-400">
-              Your MLV Forge workspace is being built...
+              {role === "poster"
+                ? "Post tasks and manage your projects"
+                : "Browse tasks and build your portfolio"}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="glass p-6 rounded-lg">
-              <h3 className="font-heading font-bold mb-2">Profile Setup</h3>
-              <p className="text-sm text-gray-400 mb-4">
-                Complete your profile to start working on projects
-              </p>
-              <Link
-                href="/onboarding"
-                className="text-primary hover:underline text-sm"
-              >
-                Update Profile →
-              </Link>
-            </div>
+          {role === "poster" ? (
+            // Poster Dashboard
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="glass p-6 rounded-lg">
+                <h3 className="font-heading font-bold mb-2">Post a Task</h3>
+                <p className="text-sm text-gray-400 mb-4">
+                  Describe your task and get matched with skilled doers
+                </p>
+                <span className="text-sm text-gray-500">Coming soon</span>
+              </div>
 
-            <div className="glass p-6 rounded-lg">
-              <h3 className="font-heading font-bold mb-2">Browse Projects</h3>
-              <p className="text-sm text-gray-400 mb-4">
-                Discover projects that match your skills
-              </p>
-              <span className="text-sm text-gray-500">Coming soon</span>
-            </div>
+              <div className="glass p-6 rounded-lg">
+                <h3 className="font-heading font-bold mb-2">Active Tasks</h3>
+                <p className="text-sm text-gray-400 mb-4">
+                  Monitor progress on your posted tasks
+                </p>
+                <span className="text-sm text-gray-500">Coming soon</span>
+              </div>
 
-            <div className="glass p-6 rounded-lg">
-              <h3 className="font-heading font-bold mb-2">Your Earnings</h3>
-              <p className="text-sm text-gray-400 mb-4">
-                Track your income and completed projects
-              </p>
-              <span className="text-sm text-gray-500">Coming soon</span>
+              <div className="glass p-6 rounded-lg">
+                <h3 className="font-heading font-bold mb-2">Completed Tasks</h3>
+                <p className="text-sm text-gray-400 mb-4">
+                  Review completed work and rate doers
+                </p>
+                <span className="text-sm text-gray-500">Coming soon</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            // Doer Dashboard
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="glass p-6 rounded-lg">
+                <h3 className="font-heading font-bold mb-2">Browse Tasks</h3>
+                <p className="text-sm text-gray-400 mb-4">
+                  Find tasks that match your skills and interests
+                </p>
+                <span className="text-sm text-gray-500">Coming soon</span>
+              </div>
+
+              <div className="glass p-6 rounded-lg">
+                <h3 className="font-heading font-bold mb-2">Active Tasks</h3>
+                <p className="text-sm text-gray-400 mb-4">
+                  Work on your current tasks with AI assistance
+                </p>
+                <span className="text-sm text-gray-500">Coming soon</span>
+              </div>
+
+              <div className="glass p-6 rounded-lg">
+                <h3 className="font-heading font-bold mb-2">Your Earnings</h3>
+                <p className="text-sm text-gray-400 mb-4">
+                  Track your income and completed tasks
+                </p>
+                <span className="text-sm text-gray-500">Coming soon</span>
+              </div>
+            </div>
+          )}
 
           <div className="mt-12 glass p-8 rounded-lg text-center">
             <h2 className="text-2xl font-heading font-bold mb-4">
               🎉 Welcome to MLV Forge!
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              The platform is currently in active development. Core features like
-              project posting, applications, and payments will be available soon.
+              The AI-powered task marketplace is in active development. Core features like
+              task posting, AI matching, and payments will be available soon.
               Thank you for being an early adopter!
             </p>
           </div>

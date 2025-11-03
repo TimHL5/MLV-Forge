@@ -22,14 +22,19 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MLV Forge - Where AI Meets Ambition",
-  description: "AI-powered student workforce platform connecting college students with companies for real projects. Gen Z talent, AI powered, real results.",
-  keywords: ["student workforce", "AI platform", "college students", "freelance", "gig economy", "Gen Z talent"],
+  title: "MLV Forge - AI-Powered Task Marketplace | Post Tasks, Get Results",
+  description: "The task marketplace with AI superpowers. Post any digital task and get professional results. Doers use built-in AI tools to deliver faster, better work. Join now.",
+  keywords: ["task marketplace", "AI freelancing", "gig economy", "task automation", "AI tools", "freelance platform", "video editing", "research", "design tasks", "AI workspace"],
   authors: [{ name: "MLV Forge" }],
   openGraph: {
-    title: "MLV Forge - Where AI Meets Ambition",
-    description: "Turn your AI skills into real work. Get paid. Build your portfolio.",
+    title: "MLV Forge - AI-Powered Task Marketplace",
+    description: "Post tasks. Get results. All powered by AI built into every workflow.",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MLV Forge - AI-Powered Task Marketplace",
+    description: "Post tasks. Get results. All powered by AI built into every workflow.",
   },
 };
 

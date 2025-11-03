@@ -2,7 +2,7 @@
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
-export async function updateUserRole(role: "student" | "company") {
+export async function updateUserRole(role: "doer" | "poster") {
   const { userId } = await auth();
 
   if (!userId) {
@@ -11,9 +11,15 @@ export async function updateUserRole(role: "student" | "company") {
 
   try {
     const client = await clerkClient();
+
+    // Check if user is @mlvignite.com admin
+    const user = await client.users.getUser(userId);
+    const isAdmin = user.emailAddresses[0]?.emailAddress?.endsWith('@mlvignite.com') || false;
+
     await client.users.updateUser(userId, {
       publicMetadata: {
         role,
+        isAdmin,
         onboarded: true,
       },
     });

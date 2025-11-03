@@ -41,12 +41,12 @@ function OnboardingContent() {
   const searchParams = useSearchParams();
   const roleParam = searchParams.get("role");
 
-  const [role, setRole] = useState<"student" | "company" | null>(
-    roleParam as "student" | "company" | null
+  const [role, setRole] = useState<"doer" | "poster" | null>(
+    roleParam as "doer" | "poster" | null
   );
   const [loading, setLoading] = useState(false);
 
-  const handleRoleSelection = async (selectedRole: "student" | "company") => {
+  const handleRoleSelection = async (selectedRole: "doer" | "poster") => {
     setLoading(true);
     try {
       // Update user metadata with selected role using server action
@@ -92,57 +92,55 @@ function OnboardingContent() {
               Welcome to MLV Forge! 🎉
             </h1>
             <p className="text-xl text-gray-400">
-              Let's get you set up. Are you a student or a company?
+              The AI-powered task marketplace. What brings you here?
             </p>
           </div>
 
           {!role ? (
             <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-              {/* Student Card */}
+              {/* Task Doer Card */}
               <button
-                onClick={() => handleRoleSelection("student")}
+                onClick={() => handleRoleSelection("doer")}
                 disabled={loading}
                 className="glass p-8 rounded-lg text-left hover:border-primary/50 transition-all cursor-pointer group disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <span className="text-2xl">🎓</span>
+                  <span className="text-2xl">🚀</span>
                 </div>
                 <h3 className="text-2xl font-heading font-bold mb-3">
-                  I'm a Student
+                  Complete Tasks
                 </h3>
                 <p className="text-gray-400 mb-4">
-                  Earn $20-30/hour while building your portfolio through real
-                  client work guided by AI mentors.
+                  Browse tasks, work with AI assistance, and earn $15-50 per task while building your skills.
                 </p>
                 <ul className="space-y-2 text-sm text-gray-300">
-                  <li>✓ Work 10-15 hours/week</li>
-                  <li>✓ AI-powered project assistance</li>
-                  <li>✓ Build your portfolio</li>
-                  <li>✓ Get paid directly</li>
+                  <li>✓ AI workspace for every task</li>
+                  <li>✓ Learn while you earn</li>
+                  <li>✓ Build real portfolio pieces</li>
+                  <li>✓ Flexible schedule</li>
                 </ul>
               </button>
 
-              {/* Company Card */}
+              {/* Task Poster Card */}
               <button
-                onClick={() => handleRoleSelection("company")}
+                onClick={() => handleRoleSelection("poster")}
                 disabled={loading}
                 className="glass p-8 rounded-lg text-left hover:border-primary/50 transition-all cursor-pointer group disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-success/20 transition-colors">
-                  <span className="text-2xl">🏢</span>
+                  <span className="text-2xl">⚡</span>
                 </div>
                 <h3 className="text-2xl font-heading font-bold mb-3">
-                  I'm a Company
+                  Post Tasks
                 </h3>
                 <p className="text-gray-400 mb-4">
-                  Get marketing, research, and analysis done at 80% lower cost
-                  with AI-augmented Gen Z talent.
+                  Post any digital task and get it done by AI-powered doers at 10X the speed.
                 </p>
                 <ul className="space-y-2 text-sm text-gray-300">
-                  <li>✓ 80% cost savings</li>
-                  <li>✓ High-quality work</li>
-                  <li>✓ Fast turnaround</li>
-                  <li>✓ Escrow protection</li>
+                  <li>✓ AI matches you instantly</li>
+                  <li>✓ Fixed pricing ($15-50/task)</li>
+                  <li>✓ Fast results (avg 10min match)</li>
+                  <li>✓ Quality guaranteed</li>
                 </ul>
               </button>
             </div>
