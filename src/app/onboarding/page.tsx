@@ -2,11 +2,40 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Sparkles } from "lucide-react";
 import { updateUserRole } from "./actions";
 
-export default function OnboardingPage() {
+// Loading fallback component
+function OnboardingLoading() {
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <nav className="border-b border-border glass">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-heading font-bold">MLV Forge</span>
+          </div>
+        </div>
+      </nav>
+
+      {/* Loading Content */}
+      <div className="container mx-auto px-4 py-20">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="animate-pulse">
+            <p className="text-gray-400">Loading your onboarding experience...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main onboarding content that uses useSearchParams
+function OnboardingContent() {
   const { user } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -127,5 +156,14 @@ export default function OnboardingPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Default export with Suspense boundary
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={<OnboardingLoading />}>
+      <OnboardingContent />
+    </Suspense>
   );
 }
