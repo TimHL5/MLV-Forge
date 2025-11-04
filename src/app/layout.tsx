@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import { BRAND } from "@/lib/constants";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -22,20 +18,42 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MLV Forge - AI-Powered Task Marketplace | Post Tasks, Get Results",
-  description: "The task marketplace with AI superpowers. Post any digital task and get professional results. Doers use built-in AI tools to deliver faster, better work. Join now.",
-  keywords: ["task marketplace", "AI freelancing", "gig economy", "task automation", "AI tools", "freelance platform", "video editing", "research", "design tasks", "AI workspace"],
-  authors: [{ name: "MLV Forge" }],
+  title: `${BRAND.name} - ${BRAND.description}`,
+  description: `${BRAND.tagline} The AI-native workforce platform where students build careers and companies build teams. ${BRAND.positioning}.`,
+  keywords: [
+    "AI workforce platform",
+    "student jobs",
+    "college freelancing",
+    "AI copilot",
+    "student marketplace",
+    "remote work",
+    "AI-powered tasks",
+    "content creation",
+    "research jobs",
+    "data analysis",
+    "gig economy",
+    "student earnings",
+  ],
+  authors: [{ name: BRAND.legalName }],
   openGraph: {
-    title: "MLV Forge - AI-Powered Task Marketplace",
-    description: "Post tasks. Get results. All powered by AI built into every workflow.",
+    title: `${BRAND.name} - ${BRAND.tagline}`,
+    description: BRAND.description,
     type: "website",
+    url: `https://${BRAND.domain}`,
+    siteName: BRAND.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: "MLV Forge - AI-Powered Task Marketplace",
-    description: "Post tasks. Get results. All powered by AI built into every workflow.",
+    title: `${BRAND.name} - ${BRAND.tagline}`,
+    description: BRAND.description,
+    site: "@buildnida",
+    creator: "@buildnida",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  metadataBase: new URL(`https://${BRAND.domain}`),
 };
 
 export default function RootLayout({
@@ -48,23 +66,23 @@ export default function RootLayout({
       appearance={{
         baseTheme: undefined,
         variables: {
-          // MLV Brand Colors
-          colorPrimary: '#6AC670',
-          colorSuccess: '#6AC670',
-          colorWarning: '#F2CF07',
-          colorDanger: '#dc2626',
+          // Nida Brand Colors
+          colorPrimary: '#0066FF',        // Electric Blue
+          colorSuccess: '#00FF88',        // Success Green with neon
+          colorWarning: '#FFB800',        // Warning Amber
+          colorDanger: '#FF3366',         // Error Red with neon
 
-          // Dark Backgrounds
-          colorBackground: '#0a0a0a',
-          colorInputBackground: '#1a1a1a',
+          // Dark Backgrounds (Nida Theme)
+          colorBackground: '#0A0E14',     // Void Black
+          colorInputBackground: '#0F1419', // Deep Navy
 
           // Text Colors
           colorText: '#FFFFFF',
-          colorTextSecondary: '#B0B0B0',
+          colorTextSecondary: '#8B92A6',  // Steel Gray
 
           // Borders
           colorInputText: '#FFFFFF',
-          colorNeutral: 'rgba(255, 255, 255, 0.1)',
+          colorNeutral: 'rgba(255, 255, 255, 0.05)',
 
           // Spacing
           borderRadius: '0.75rem',
@@ -80,29 +98,29 @@ export default function RootLayout({
           },
         },
         elements: {
-          // Root container
+          // Root container with Nida glow
           rootBox: {
-            boxShadow: '0 0 40px rgba(106, 198, 112, 0.2)',
+            boxShadow: '0 0 40px rgba(0, 102, 255, 0.2)',
           },
 
-          // Main card with glassmorphism
+          // Main card with glassmorphism - Nida Theme
           card: {
-            backgroundColor: 'rgba(26, 26, 26, 0.7)',
+            backgroundColor: 'rgba(15, 20, 25, 0.7)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
           },
 
-          // Header with gradient
+          // Header with Nida Electric Blue gradient
           headerTitle: {
-            background: 'linear-gradient(135deg, #6AC670 0%, #F2CF07 100%)',
+            background: 'linear-gradient(90deg, #0066FF 0%, #00D9FF 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             fontSize: '2rem',
             fontWeight: 700,
-            filter: 'drop-shadow(0 0 20px rgba(106, 198, 112, 0.3))',
+            filter: 'drop-shadow(0 0 20px rgba(0, 102, 255, 0.3))',
           },
 
           headerSubtitle: {
@@ -110,16 +128,16 @@ export default function RootLayout({
             fontSize: '1rem',
           },
 
-          // Social buttons
+          // Social buttons - Nida Theme
           socialButtonsBlockButton: {
             backgroundColor: 'rgba(255, 255, 255, 0.05)',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
             color: '#FFFFFF',
             fontWeight: 500,
             '&:hover': {
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              borderColor: '#6AC670',
+              borderColor: '#0066FF',
             },
           },
 
@@ -138,7 +156,7 @@ export default function RootLayout({
             fontSize: '0.875rem',
           },
 
-          // Form fields
+          // Form fields - Nida Theme
           formFieldLabel: {
             color: '#FFFFFF',
             fontWeight: 500,
@@ -148,64 +166,64 @@ export default function RootLayout({
           formFieldInput: {
             backgroundColor: 'rgba(255, 255, 255, 0.05)',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
             color: '#FFFFFF',
             fontSize: '1rem',
             '&:focus': {
-              borderColor: '#6AC670',
-              boxShadow: '0 0 0 3px rgba(106, 198, 112, 0.2)',
+              borderColor: '#0066FF',
+              boxShadow: '0 0 0 3px rgba(0, 102, 255, 0.2)',
             },
             '&::placeholder': {
-              color: '#808080',
+              color: '#64748B',
             },
           },
 
-          // Primary button with gradient and glow
+          // Primary button with Nida Electric Blue gradient and glow
           formButtonPrimary: {
-            background: 'linear-gradient(135deg, #6AC670 0%, #F2CF07 100%)',
-            color: '#0a0a0a',
+            background: 'linear-gradient(135deg, #0066FF 0%, #0052CC 100%)',
+            color: '#FFFFFF',
             fontWeight: 600,
             fontSize: '1rem',
             border: 'none',
-            boxShadow: '0 0 20px rgba(106, 198, 112, 0.4), 0 0 40px rgba(242, 207, 7, 0.3)',
+            boxShadow: '0 0 20px rgba(0, 102, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.6)',
             '&:hover': {
-              background: 'linear-gradient(135deg, #5AB560 0%, #E2BF07 100%)',
-              boxShadow: '0 0 30px rgba(106, 198, 112, 0.6), 0 0 60px rgba(242, 207, 7, 0.4)',
+              background: 'linear-gradient(135deg, #0052CC 0%, #003D99 100%)',
+              boxShadow: '0 0 30px rgba(0, 102, 255, 0.7), 0 6px 16px rgba(0, 0, 0, 0.8)',
             },
           },
 
-          // Footer links
+          // Footer links - Nida Theme
           footerActionText: {
-            color: '#B0B0B0',
+            color: '#8B92A6',
           },
 
           footerActionLink: {
-            color: '#6AC670',
+            color: '#0066FF',
             fontWeight: 600,
             '&:hover': {
-              color: '#5AB560',
+              color: '#00D9FF',
               textDecoration: 'underline',
             },
           },
 
-          // Error messages
+          // Error messages - Nida Theme
           formFieldErrorText: {
-            color: '#dc2626',
+            color: '#FF3366',
             fontSize: '0.875rem',
           },
 
-          // Alert banners
+          // Alert banners - Nida Theme
           alert: {
-            backgroundColor: 'rgba(242, 207, 7, 0.1)',
-            border: '1px solid rgba(242, 207, 7, 0.3)',
+            backgroundColor: 'rgba(255, 184, 0, 0.1)',
+            border: '1px solid rgba(255, 184, 0, 0.3)',
             color: '#FFFFFF',
           },
 
-          // User button popover
+          // User button popover - Nida Theme
           userButtonPopoverCard: {
-            backgroundColor: 'rgba(26, 26, 26, 0.9)',
+            backgroundColor: 'rgba(15, 20, 25, 0.9)',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
           },
 
@@ -216,15 +234,15 @@ export default function RootLayout({
             },
           },
 
-          // Identity preview
+          // Identity preview - Nida Theme
           identityPreviewText: {
             color: '#FFFFFF',
           },
 
           identityPreviewEditButton: {
-            color: '#6AC670',
+            color: '#0066FF',
             '&:hover': {
-              color: '#5AB560',
+              color: '#00D9FF',
             },
           },
         },
@@ -232,7 +250,7 @@ export default function RootLayout({
     >
       <html lang="en">
         <body
-          className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
+          className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
         >
           {children}
         </body>
